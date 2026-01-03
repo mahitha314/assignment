@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0b0f2b;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #1e90ff;
+            border: none;
+            color: rgb(237, 242, 245);
+            border-radius: 5px;
+        }
+
+        #loading {
+            margin-top: 20px;
+            font-size: 28px;
+            display: none;
+        }
+
+        #launchDetails {
+            margin: 30px 240px;
+            padding: 20px;
+            background-color: #1c9bd6;
+            border-radius: 8px;
+            display: none;
+            font-size:30px;
+        }
+    </style>
+</head>
+<body>
+
+
+
+
+    <h1>Space Launch Information Dashboard</h1>
+
+    <button onclick="loadLaunch()">Load Latest Launch</button>
+
+    <div id="loading">Loading latest launch data...</div>
+
+    <div id="launchDetails">
+        <h2>Mission Name:</h2>
+        <p id="missionName"></p>
+    </div>
+
+    <script>
+        function loadLaunch() {
+
+          
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("launchDetails").style.display = "none";
+
+           
+            fetch("https://api.spacexdata.com/v4/launches/latest")
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch launch data");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    
+                    document.getElementById("loading").style.display = "none";
+
+                   
+                    document.getElementById("missionName").innerText = data.name;
+                    document.getElementById("launchDetails").style.display = "block";
+                })
+                .catch((error) => {
+                    document.getElementById("loading").style.display = "none";
+                    alert("Error: " + error.message);
+                });
+        }
+    </script>
+
+</body>
+</html>
